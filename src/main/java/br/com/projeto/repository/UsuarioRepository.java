@@ -16,7 +16,6 @@ public class UsuarioRepository {
 
     public UsuarioRepository() {
         colecao = MongoConfig.getDatabase().getCollection("users", Usuario.class);
-        // garante no banco que não existam dois usuários com o mesmo e-mail
         colecao.createIndex(Indexes.ascending("email"), new IndexOptions().unique(true));
     }
 

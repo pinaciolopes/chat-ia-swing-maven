@@ -3,7 +3,6 @@ package br.com.projeto.service;
 import br.com.projeto.model.Usuario;
 import br.com.projeto.util.AppException;
 
-/** Guarda o usuário autenticado enquanto a aplicação está aberta. */
 public final class SessionManagerService {
 
     private static final SessionManagerService INSTANCIA = new SessionManagerService();

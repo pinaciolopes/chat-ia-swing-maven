@@ -44,12 +44,10 @@ public class AuthenticationService {
         try {
             return usuarioRepository.inserir(usuario);
         } catch (MongoWriteException e) {
-            // índice único: dois cadastros simultâneos com o mesmo e-mail
             throw new AppException("Este e-mail já está cadastrado.", e);
         }
     }
 
-    /** A mensagem de erro é a mesma para e-mail inexistente e senha errada, de propósito. */
     public Usuario login(String email, String senha) {
         if (vazio(email) || senha == null || senha.isEmpty()) {
             throw new AppException("Informe e-mail e senha.");
