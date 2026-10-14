@@ -1,0 +1,75 @@
+.root {
+    -fx-font-family: "Segoe UI", "Arial", sans-serif;
+    -fx-font-size: 14px;
+}
+
+.tela-autenticacao {
+    -fx-background-color: #f3f4f6;
+}
+
+.cartao {
+    -fx-background-color: white;
+    -fx-background-radius: 14;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.12), 24, 0.1, 0, 6);
+}
+
+.titulo-app {
+    -fx-font-size: 28px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #111827;
+}
+
+.subtitulo {
+    -fx-text-fill: #6b7280;
+    -fx-padding: 0 0 8 0;
+}
+
+.rotulo-campo {
+    -fx-font-size: 12px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #374151;
+}
+
+.campo {
+    -fx-background-color: white;
+    -fx-background-insets: 0;
+    -fx-background-radius: 8;
+    -fx-border-color: #d1d5db;
+    -fx-border-radius: 8;
+    -fx-padding: 9 12 9 12;
+    -fx-text-fill: #111827;
+    -fx-focus-color: transparent;
+    -fx-faint-focus-color: transparent;
+}
+
+.campo:focused {
+    -fx-border-color: #2563eb;
+}
+
+.botao-primario {
+    -fx-background-color: #2563eb;
+    -fx-background-radius: 8;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-padding: 10 16 10 16;
+    -fx-cursor: hand;
+}
+
+.botao-primario:hover {
+    -fx-background-color: #1d4ed8;
+}
+
+.botao-primario:disabled {
+    -fx-opacity: 0.6;
+}
+
+.mensagem-erro {
+    -fx-background-color: #fee2e2;
+    -fx-background-radius: 6;
+    -fx-text-fill: #b91c1c;
+    -fx-padding: 8 10 8 10;
+}
+
+.hyperlink {
+    -fx-text-fill: #2563eb;
+}
