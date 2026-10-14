@@ -12,6 +12,8 @@ import com.mongodb.client.MongoDatabase;
 import org.bson.codecs.configuration.CodecRegistry;
 import org.bson.codecs.pojo.PojoCodecProvider;
 
+import java.util.concurrent.TimeUnit;
+
 public final class MongoConfig {
 
     private static final String DATABASE_NAME = "chat_ia";
@@ -29,6 +31,7 @@ public final class MongoConfig {
 
                 MongoClientSettings settings = MongoClientSettings.builder()
                         .applyConnectionString(new ConnectionString(AppConfig.require("MONGODB_URI")))
+                        .applyToClusterSettings(b -> b.serverSelectionTimeout(8, TimeUnit.SECONDS))
                         .codecRegistry(registry)
                         .build();
 
