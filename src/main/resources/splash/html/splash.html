@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>Chat IA</title>
+    <link rel="stylesheet" href="../css/splash.css">
+</head>
+<body>
+<div id="palco">
+    <div id="topo">
+        <div id="brilho"></div>
+        <div id="logo">
+            <svg width="120" height="120" viewBox="0 0 120 120">
+                <defs>
+                    <linearGradient id="grad" x1="0" y1="0" x2="1" y2="1">
+                        <stop offset="0" stop-color="#60a5fa"/>
+                        <stop offset="1" stop-color="#7c3aed"/>
+                    </linearGradient>
+                </defs>
+                <circle cx="60" cy="60" r="56" fill="url(#grad)"/>
+                <path d="M36 42 h48 a8 8 0 0 1 8 8 v22 a8 8 0 0 1 -8 8 H62 l-14 12 v-12 H36 a8 8 0 0 1 -8 -8 V50 a8 8 0 0 1 8 -8 z" fill="#ffffff"/>
+                <circle class="ponto" cx="46" cy="61" r="4.5" fill="#6366f1"/>
+                <circle class="ponto" cx="60" cy="61" r="4.5" fill="#6366f1"/>
+                <circle class="ponto" cx="74" cy="61" r="4.5" fill="#6366f1"/>
+            </svg>
+        </div>
+    </div>
+    <h1 id="nome">Chat IA</h1>
+    <p id="slogan">Converse. Pesquise. Aprenda.</p>
+    <div id="barra"><div id="preenchimento"></div></div>
+</div>
+
+<!-- a ordem importa: primeiro o GSAP, depois a animação que o usa -->
+<script src="../js/gsap.min.js"></script>
+<script src="../js/splash.js"></script>
+</body>
+</html>
