@@ -50,6 +50,11 @@ public class ChatController {
                 fecharConversa();
             }
         });
+        sidebar.getBotaoTema().setOnAction(e -> {
+            TemaController.alternar();
+            atualizarRotuloTema();
+        });
+        atualizarRotuloTema();
 
         view.getBotaoRenomear().setOnAction(e -> renomear());
         view.getBotaoExcluir().setOnAction(e -> excluir());
@@ -57,6 +62,7 @@ public class ChatController {
         view.getCampoMensagem().addEventFilter(KeyEvent.KEY_PRESSED, this::tratarTeclas);
 
         carregarConversas(null);
+
     }
 
     // ---------- conversas ----------
@@ -130,10 +136,12 @@ public class ChatController {
         Conversa alvo = conversaAtual;
 
         TextInputDialog dialogo = new TextInputDialog(alvo.getTitle());
+        TemaController.aplicarEm(dialogo);
         dialogo.initOwner(view.getScene().getWindow());
         dialogo.setTitle("Renomear conversa");
         dialogo.setHeaderText("Digite o novo título da conversa");
         dialogo.setContentText("Título:");
+
 
         dialogo.showAndWait().ifPresent(novoTitulo -> {
             view.limparErro();
@@ -153,6 +161,7 @@ public class ChatController {
         ButtonType confirmar = new ButtonType("Excluir", ButtonBar.ButtonData.OK_DONE);
         ButtonType cancelar = new ButtonType("Cancelar", ButtonBar.ButtonData.CANCEL_CLOSE);
         Alert alerta = new Alert(Alert.AlertType.CONFIRMATION);
+        TemaController.aplicarEm(alerta);
         alerta.initOwner(view.getScene().getWindow());
         alerta.setTitle("Excluir conversa");
         alerta.setHeaderText("Excluir a conversa \"" + alvo.getTitle() + "\"?");
@@ -230,6 +239,11 @@ public class ChatController {
         view.mostrarErro(ErrorHandler.paraUsuario(erro));
     }
 
+    private void atualizarRotuloTema() {
+        boolean claroAtivo = TemaController.getAtual() == TemaController.Tema.CLARO;
+        sidebar.getBotaoTema().setText(claroAtivo ? "Tema escuro" : "Tema claro");
+    }
+
     /** Roda o trabalho em outra thread; os dois retornos voltam para a thread da interface. */
     private <T> void executar(String nome, Callable<T> trabalho, Consumer<T> aoConcluir, Consumer<Throwable> aoFalhar) {
         Task<T> tarefa = new Task<>() {
@@ -260,4 +274,5 @@ public class ChatController {
         }
         return chatService;
     }
+
 }
