@@ -1,0 +1,11 @@
+[33m31bbdc7[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m)[m feat: integra splash e login na Main
+[33m5614377[m feat: implementa tela de login
+[33md443df7[m feat: adiciona animação de entrada com GSAP
+[33m33c9588[m feat: adiciona Navegador para troca de telas
+[33m405dc94[m feat: define tempo limite de conexão com o MongoDB
+[33m99b5733[m[33m ([m[1;31morigin/main[m[33m)[m adiciona Main, Launcher do JavaFX, implementa recuperação de senha por token
+[33mb6b804c[m integra API Groq e implementa ChatService
+[33m236eee3[m Adiciona RAG por palavras-chave, base de conhecimento do RAG, gerenciamento de conversas com isolamento por usuário, processamento de texto do RAG
+[33m3175504[m Implementação messages e conversations
+[33mc4ab02e[m implementa cadastro e login
+[33md73ddb4[m Adiciona Usuario e UsuarioRepository

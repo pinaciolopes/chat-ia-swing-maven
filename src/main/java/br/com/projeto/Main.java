@@ -1,8 +1,7 @@
 package br.com.projeto;
 
 import br.com.projeto.config.MongoConfig;
-import br.com.projeto.controller.LoginController;
-import br.com.projeto.view.LoginView;
+import br.com.projeto.controller.Rotas;
 import br.com.projeto.view.Navegador;
 import br.com.projeto.view.SplashView;
 import javafx.application.Application;
@@ -20,12 +19,7 @@ public class Main extends Application {
 
         SplashView splash = new SplashView();
         Navegador.mostrar(splash, "Chat IA");
-        splash.iniciar(() -> {
-            LoginView login = new LoginView();
-            new LoginController(login);
-            Navegador.mostrar(login, "Chat IA - Login");
-        });
-
+        splash.iniciar(Rotas::irParaLogin);
     }
 
     /** Chamado quando a janela principal é fechada: libera a conexão com o MongoDB. */

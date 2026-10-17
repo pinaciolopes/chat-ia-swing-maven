@@ -73,3 +73,33 @@
 .hyperlink {
     -fx-text-fill: #2563eb;
 }
+
+.mensagem-sucesso {
+    -fx-background-color: #dcfce7;
+    -fx-background-radius: 6;
+    -fx-text-fill: #15803d;
+    -fx-padding: 8 10 8 10;
+}
+
+.caixa-demo {
+    -fx-background-color: #fef9c3;
+    -fx-background-radius: 8;
+    -fx-padding: 10;
+}
+
+.texto-demo {
+    -fx-font-size: 12px;
+    -fx-text-fill: #854d0e;
+}
+
+.botao-secundario {
+    -fx-background-color: #e5e7eb;
+    -fx-background-radius: 8;
+    -fx-text-fill: #111827;
+    -fx-padding: 8 14 8 14;
+    -fx-cursor: hand;
+}
+
+.botao-secundario:hover {
+    -fx-background-color: #d1d5db;
+}

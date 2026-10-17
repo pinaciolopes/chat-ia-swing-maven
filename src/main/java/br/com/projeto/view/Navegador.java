@@ -19,7 +19,7 @@ public final class Navegador {
         cena = new Scene(new StackPane(), largura, altura);
         palco.setScene(cena);
         palco.setMinWidth(800);
-        palco.setMinHeight(520);
+        palco.setMinHeight(620);
     }
 
     public static void mostrar(Parent tela, String titulo) {

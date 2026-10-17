@@ -19,7 +19,8 @@ public class LoginController {
     public LoginController(LoginView view) {
         this.view = view;
         view.getBotaoEntrar().setOnAction(e -> entrar());
-        // os links "Criar conta" e "Esqueci minha senha" serão ligados nas próximas telas
+        view.getLinkCadastro().setOnAction(e -> Rotas.irParaCadastro());
+        view.getLinkEsqueciSenha().setOnAction(e -> Rotas.irParaRecuperarSenha());
     }
 
     private void entrar() {
