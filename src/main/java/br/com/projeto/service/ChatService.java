@@ -14,7 +14,7 @@ import org.bson.types.ObjectId;
 public class ChatService {
 
     private static final int LIMITE_HISTORICO = 10;
-    private static final int TAMANHO_MAXIMO_MENSAGEM = 4000;
+    public static final int TAMANHO_MAXIMO_MENSAGEM = 4000;;
 
     private final ConversaRepository conversaRepository = new ConversaRepository();
     private final MensagemRepository mensagemRepository = new MensagemRepository();
