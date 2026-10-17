@@ -39,7 +39,7 @@ public class LoginController {
         tarefa.setOnSucceeded(e -> {
             view.definirCarregando(false);
             view.getCampoSenha().clear();
-            abrirTelaPrincipal(tarefa.getValue());
+            Rotas.irParaChat();
         });
         tarefa.setOnFailed(e -> {
             view.definirCarregando(false);
@@ -62,11 +62,5 @@ public class LoginController {
             servico = new AuthenticationService();
         }
         return servico;
-    }
-
-    /** Provisório: será substituído pela ChatView. */
-    private void abrirTelaPrincipal(Usuario usuario) {
-        Label boasVindas = new Label("Login realizado! Bem-vindo, " + usuario.getName());
-        Navegador.mostrar(new StackPane(boasVindas), "Chat IA");
     }
 }

@@ -103,3 +103,138 @@
 .botao-secundario:hover {
     -fx-background-color: #d1d5db;
 }
+
+/* ===== Tela principal (chat) ===== */
+.sidebar {
+    -fx-background-color: #f9fafb;
+    -fx-border-color: #e5e7eb;
+    -fx-border-width: 0 1 0 0;
+}
+
+.rotulo-sidebar {
+    -fx-font-size: 11px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #6b7280;
+    -fx-padding: 8 0 0 4;
+}
+
+.lista-conversas {
+    -fx-background-color: transparent;
+    -fx-background-insets: 0;
+    -fx-padding: 0;
+}
+
+.lista-conversas .list-cell {
+    -fx-background-color: transparent;
+    -fx-background-radius: 8;
+    -fx-padding: 10 12 10 12;
+    -fx-text-fill: #111827;
+}
+
+.lista-conversas .list-cell:filled:hover {
+    -fx-background-color: #e5e7eb;
+}
+
+.lista-conversas .list-cell:filled:selected {
+    -fx-background-color: #dbeafe;
+    -fx-text-fill: #1e3a8a;
+}
+
+.usuario-rodape {
+    -fx-font-weight: bold;
+    -fx-text-fill: #374151;
+    -fx-padding: 6 0 0 2;
+}
+
+.painel-chat {
+    -fx-background-color: #f3f4f6;
+}
+
+.cabecalho-chat {
+    -fx-background-color: white;
+    -fx-border-color: #e5e7eb;
+    -fx-border-width: 0 0 1 0;
+    -fx-padding: 12 20 12 20;
+}
+
+.titulo-conversa {
+    -fx-font-size: 17px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #111827;
+}
+
+.botao-perigo {
+    -fx-background-color: #fee2e2;
+    -fx-background-radius: 8;
+    -fx-text-fill: #b91c1c;
+    -fx-padding: 8 14 8 14;
+    -fx-cursor: hand;
+}
+
+.botao-perigo:hover {
+    -fx-background-color: #fecaca;
+}
+
+.area-mensagens {
+    -fx-background-color: transparent;
+    -fx-background: transparent;
+}
+
+.area-mensagens > .viewport {
+    -fx-background-color: transparent;
+}
+
+.lista-mensagens {
+    -fx-background-color: transparent;
+}
+
+.balao-usuario {
+    -fx-background-color: #2563eb;
+    -fx-background-radius: 14 14 4 14;
+    -fx-text-fill: white;
+    -fx-padding: 10 14 10 14;
+}
+
+.balao-ia {
+    -fx-background-color: white;
+    -fx-background-radius: 14 14 14 4;
+    -fx-border-color: #e5e7eb;
+    -fx-border-radius: 14 14 14 4;
+    -fx-text-fill: #111827;
+    -fx-padding: 10 14 10 14;
+}
+
+.estado-vazio {
+    -fx-text-fill: #9ca3af;
+    -fx-font-size: 15px;
+}
+
+.rodape-chat {
+    -fx-background-color: white;
+    -fx-border-color: #e5e7eb;
+    -fx-border-width: 1 0 0 0;
+    -fx-padding: 12 20 16 20;
+}
+
+.campo-mensagem {
+    -fx-background-color: transparent;
+    -fx-background-insets: 0;
+    -fx-padding: 0;
+}
+
+.campo-mensagem .content {
+    -fx-background-color: white;
+    -fx-background-insets: 0;
+    -fx-background-radius: 10;
+    -fx-border-color: #d1d5db;
+    -fx-border-radius: 10;
+}
+
+.campo-mensagem:focused .content {
+    -fx-border-color: #2563eb;
+}
+
+.texto-espera {
+    -fx-text-fill: #6b7280;
+    -fx-font-size: 12px;
+}
