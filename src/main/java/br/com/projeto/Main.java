@@ -6,6 +6,7 @@ import br.com.projeto.controller.TemaController;
 import br.com.projeto.view.Navegador;
 import br.com.projeto.view.SplashView;
 import javafx.application.Application;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
 public class Main extends Application {
@@ -18,6 +19,7 @@ public class Main extends Application {
         SplashView splash = new SplashView();
         Navegador.mostrar(splash, "Chat IA");
         splash.iniciar(Rotas::irParaLogin);
+        stage.getIcons().add(new Image(Main.class.getResourceAsStream("/images/icone.png")));
     }
 
     /** Chamado quando a janela principal é fechada: libera a conexão com o MongoDB. */
