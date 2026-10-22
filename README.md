@@ -1,6 +1,6 @@
 # Chat IA
 
-Aplicação desktop de chat com Inteligência Artificial, desenvolvida em Java com JavaFX, MongoDB Atlas, RAG por palavras-chave e a API da Groq.
+Aplicação desktop de chat com Inteligência Artificial, desenvolvida em Java com JavaFX, MongoDB Atlas, RAG por palavras-chave e a API da Groq. É distribuída como um **executável portátil para Windows**, que já leva o Java embutido.
 
 ---
 
@@ -18,6 +18,7 @@ O **Chat IA** permite que diferentes usuários usem o mesmo sistema, cada um com
 - **RAG por palavras-chave**: a pergunta é processada, e documentos relevantes da base de conhecimento entram como contexto na chamada à IA.
 - Tema claro e escuro, controlados por JavaFX CSS (a escolha é lembrada).
 - Interface 100% construída por código, sem Scene Builder.
+- Executável portátil para Windows, gerado com o `jpackage`, que não exige Java instalado no computador de destino.
 
 ## 2. Tecnologias
 
@@ -36,7 +37,7 @@ O **Chat IA** permite que diferentes usuários usem o mesmo sistema, cada um com
 | JUnit 5 | Testes unitários |
 | IntelliJ IDEA | Ambiente de desenvolvimento |
 | Git / GitHub | Versionamento |
-| jpackage | Instalador para Windows |
+| jpackage | Geração do executável para Windows |
 
 ## 3. Arquitetura
 
@@ -82,7 +83,7 @@ src/
 │   ├── java/br/com/projeto/
 │   │   ├── Main.java            Aplicação JavaFX
 │   │   ├── Launcher.java        Ponto de entrada (necessário ao rodar pelo classpath e pelo jpackage)
-│   │   ├── config/              Leitura de variáveis de ambiente e conexão com o MongoDB
+│   │   ├── config/              Leitura das configurações (variáveis de ambiente e .env) e conexão com o MongoDB
 │   │   ├── controller/          Controllers das telas, rotas de navegação e controle de tema
 │   │   ├── model/               Usuario, Conversa, Mensagem, DocumentoConhecimento, TokenRecuperacaoSenha
 │   │   ├── repository/          Acesso ao MongoDB (um repository por coleção)
@@ -92,33 +93,49 @@ src/
 │   │   └── util/                AppException e ErrorHandler
 │   └── resources/
 │       ├── css/                 light.css e dark.css (temas do JavaFX)
-│       ├── images/
+│       ├── images/              Ícone da janela
 │       └── splash/              Animação de entrada
 │           ├── html/splash.html
 │           ├── css/splash.css
 │           └── js/              gsap.min.js e splash.js
 └── test/java/                   Testes JUnit (TextoProcessador)
+packaging/
+└── icone.ico                    Ícone do executável
+.env.example                     Modelo do arquivo de configuração (sem credenciais reais)
+.gitignore
 pom.xml
 README.md
 ```
 
 ## 5. Pré-requisitos
 
-- JDK 21
+Para **desenvolver e gerar o executável**:
+
+- JDK 21 (inclui o `jpackage`)
 - Maven (ou o Maven integrado ao IntelliJ)
 - Conta no **MongoDB Atlas** com um cluster (o plano gratuito M0 serve)
 - Conta na **Groq** com uma API Key
-- Windows (sistema alvo do instalador)
+- Windows
 - IntelliJ IDEA com **Annotation Processing** habilitado, por causa do Lombok (`Settings > Build, Execution, Deployment > Compiler > Annotation Processors`)
+
+Para **apenas executar** o programa já gerado:
+
+- Windows 10 ou 11 de 64 bits, com acesso à internet.
+- Não é necessário instalar Java, Maven nem qualquer outra ferramenta: o Java vai embutido no executável.
 
 ## 6. Configuração
 
-As credenciais **não ficam no código nem no repositório**. A aplicação lê duas variáveis de ambiente:
+As credenciais **não ficam no código nem no repositório**. A aplicação precisa de duas configurações:
 
-| Variável | Conteúdo |
+| Chave | Conteúdo |
 |---|---|
 | `MONGODB_URI` | String de conexão do Atlas (`mongodb+srv://...`) |
 | `GROQ_API_KEY` | Chave da API da Groq (`gsk_...`) |
+
+Elas podem ser informadas de duas formas. A aplicação procura, nesta ordem, e usa o primeiro valor encontrado:
+
+1. **Variáveis de ambiente** do sistema, ou da configuração de execução do IntelliJ.
+2. **Arquivo `.env`**, procurado em: ao lado do `ChatIA.exe`, em `%USERPROFILE%\.chat-ia\.env` e na pasta atual (a raiz do projeto, ao rodar pelo IntelliJ).
 
 ### 6.1 MongoDB Atlas
 
@@ -129,27 +146,32 @@ As credenciais **não ficam no código nem no repositório**. A aplicação lê 
 
 A conexão com o Atlas usa `mongodb+srv://`, que trafega por TLS. O banco usado é o `chat_ia`, criado automaticamente na primeira gravação.
 
-### 6.2 Variáveis no IntelliJ
+### 6.2 Arquivo `.env`
 
-`Run > Edit Configurations...` > configuração da classe `Launcher` > **Modify options > Environment variables**, e adicione:
+Copie o modelo `.env.example` para `.env` e preencha os valores:
 
 ```
 MONGODB_URI=mongodb+srv://USUARIO:SENHA@SEU_CLUSTER.mongodb.net/?appName=Cluster0
 GROQ_API_KEY=gsk_sua_chave_aqui
 ```
 
-O IntelliJ guarda isso na pasta `.idea/`, que está no `.gitignore`.
+Formato: uma configuração por linha, no padrão `CHAVE=VALOR`, sem espaços em volta do `=`. Linhas iniciadas por `#` são comentários.
 
-### 6.3 Variáveis no Windows (para a aplicação instalada)
+- **Rodando pelo IntelliJ:** coloque o `.env` na **raiz do projeto**, ao lado do `pom.xml`.
+- **Executável:** coloque o `.env` na **mesma pasta do `ChatIA.exe`**.
 
-No prompt de comando, substituindo pelos seus valores:
+O arquivo `.env` real está no `.gitignore` e nunca é versionado. Somente o `.env.example`, com valores fictícios, vai para o repositório.
+
+### 6.3 Variáveis de ambiente (alternativa)
+
+Se preferir não usar o arquivo, defina as variáveis no Windows, substituindo pelos seus valores:
 
 ```
 setx MONGODB_URI "mongodb+srv://USUARIO:SENHA@SEU_CLUSTER.mongodb.net/?appName=Cluster0"
 setx GROQ_API_KEY "gsk_sua_chave_aqui"
 ```
 
-Feche e abra novamente o terminal (ou a aplicação) para as variáveis valerem. **O instalador não contém credenciais**: em cada computador, elas precisam ser definidas dessa forma.
+Feche e abra novamente o terminal (ou a aplicação) para as variáveis valerem. No IntelliJ, também é possível informá-las em `Run > Edit Configurations... > Modify options > Environment variables`. As variáveis de ambiente têm prioridade sobre o `.env`.
 
 ## 7. Banco de dados
 
@@ -207,7 +229,7 @@ Os documentos ficam na coleção `documents`. Nesta versão, eles são cadastrad
 ### Pelo IntelliJ
 
 1. Abra a pasta do projeto (`File > Open`) e aguarde o Maven baixar as dependências (*Reload All Maven Projects*, se necessário).
-2. Configure as variáveis de ambiente, conforme a seção 6.2.
+2. Configure as credenciais (seção 6): o mais simples é criar o `.env` na raiz do projeto.
 3. Execute a classe **`br.com.projeto.Launcher`**. Não execute a `Main` diretamente: uma classe que estende `Application` não inicia pelo classpath sem os módulos do JavaFX.
 
 ### Testes unitários
@@ -218,26 +240,63 @@ mvn test
 
 Executa os testes do `TextoProcessador` (normalização, remoção de stop words, palavras duplicadas e texto vazio).
 
-## 10. Instalação
+## 10. Instalação (executável para Windows)
 
-> **A COMPLETAR após gerar e testar o instalador com o jpackage.**
+A distribuição é um **executável portátil**: uma pasta com o `ChatIA.exe`, o código da aplicação e o Java embutido. Não há instalador, e nada é gravado fora da pasta, exceto a preferência de tema do usuário.
 
-1. Execute o instalador **[NOME-DO-INSTALADOR].exe**.
-2. Siga o assistente. O instalador cria atalho na área de trabalho e entrada no menu Iniciar.
-3. Defina as variáveis `MONGODB_URI` e `GROQ_API_KEY` no Windows (seção 6.3).
-4. Abra o **Chat IA** pelo atalho ou pelo menu Iniciar.
+### 10.1 Como usar o executável
 
-Comando usado para gerar o instalador:
+1. Extraia o arquivo `ChatIA-executavel.zip` (de preferência com o botão direito > *Extrair tudo*) em qualquer pasta.
+2. Dentro da pasta `ChatIA`, confira se existe o arquivo **`.env`**, ao lado do `ChatIA.exe`. Se não existir, copie o `.env.example` para `.env` e preencha a `MONGODB_URI` e a `GROQ_API_KEY` (seção 6.2).
+3. Dê um duplo clique em **`ChatIA.exe`**.
+4. Na primeira execução, o Windows pode mostrar o aviso "O Windows protegeu o computador", porque o executável não é assinado digitalmente. Clique em **Mais informações > Executar assim mesmo**.
 
+Não mova o `ChatIA.exe` para fora da pasta: ele depende das pastas `app` e `runtime` que ficam ao lado dele. Para ter um atalho, crie-o a partir do `ChatIA.exe` (botão direito > *Enviar para > Área de trabalho*).
+
+### 10.2 Como gerar o executável
+
+Requer o JDK 21 e o Maven. Na pasta do projeto:
+
+1. Gere os `.jar` do projeto e das dependências em `target\libs` (na aba Maven do IntelliJ, execute `clean` e `package`; ou `mvn clean package -DskipTests`).
+2. Execute o `jpackage` no PowerShell, ajustando o caminho do JDK 21:
+
+```powershell
+$JPACKAGE = "<pasta-do-JDK-21>\bin\jpackage.exe"
+
+Remove-Item -Recurse -Force target\executavel -ErrorAction SilentlyContinue
+
+$parametros = @(
+    "--type", "app-image",
+    "--name", "ChatIA",
+    "--app-version", "1.0.0",
+    "--vendor", "Pablo Phelipe",
+    "--description", "Chat com IA - JavaFX, MongoDB Atlas e Groq",
+    "--input", "target\libs",
+    "--main-jar", "chat-ia-1.0.0.jar",
+    "--main-class", "br.com.projeto.Launcher",
+    "--add-modules", "java.se,jdk.unsupported,jdk.crypto.ec,jdk.naming.dns,jdk.xml.dom",
+    "--icon", "packaging\icone.ico",
+    "--dest", "target\executavel"
+)
+
+& $JPACKAGE @parametros
 ```
-[COMANDO DO JPACKAGE]
+
+3. A pasta `target\executavel\ChatIA` contém o `ChatIA.exe`. Copie o `.env` preenchido para dentro dela e compacte:
+
+```powershell
+Compress-Archive -Path target\executavel\ChatIA -DestinationPath ChatIA-executavel.zip -Force
 ```
+
+Módulos incluídos no Java embutido, e o motivo de cada um: `java.se` (conjunto padrão do Java SE), `jdk.crypto.ec` (conexões TLS com o Atlas e com a Groq), `jdk.naming.dns` (resolução do endereço `mongodb+srv://`), `jdk.xml.dom` e `jdk.unsupported` (necessários ao JavaFX e ao `WebView`).
+
+Para depurar problemas na inicialização, acrescente `"--win-console",` à lista de parâmetros, gere o executável de novo e abra-o por um terminal (`cmd`): as mensagens de erro aparecem na tela.
 
 ## 11. Segurança
 
 - **Senhas:** armazenadas apenas como hash **BCrypt** (custo 12, com salt automático). Não existe campo nem rotina que guarde ou recupere a senha em texto puro. A senha mínima é de 8 caracteres.
 - **Login:** a mensagem de erro é a mesma para e-mail inexistente e senha incorreta ("E-mail ou senha inválidos."), para não revelar quais e-mails estão cadastrados.
-- **API Keys e credenciais:** a chave da Groq e a URI do MongoDB são lidas de variáveis de ambiente. Nenhuma credencial é versionada: o `.gitignore` exclui `.idea/`, `target/` e `.env`.
+- **API Keys e credenciais:** a chave da Groq e a URI do MongoDB vêm de variáveis de ambiente ou do arquivo `.env`, nunca do código-fonte. Nenhuma credencial é versionada: o `.gitignore` exclui `.env`, `.idea/` e `target/`, e o repositório contém apenas o `.env.example`, com valores fictícios.
 - **Sessão:** o usuário autenticado fica guardado em memória (`SessionManagerService`) enquanto a aplicação está aberta. O logout encerra a sessão e volta ao login, permitindo que outro usuário entre depois.
 - **Isolamento de dados:** o dono de toda conversa vem **da sessão**, nunca de dados enviados pela interface. Todas as consultas, alterações e exclusões de conversas filtram por `ownerId` e as de mensagens por `userId`, direto no banco. Um usuário que tente acessar a conversa de outro recebe a mesma mensagem de "Conversa não encontrada", sem revelar que ela existe.
 - **Recuperação de senha:** em vez de exibir a senha, o sistema gera um código aleatório (`SecureRandom`, 256 bits). O banco guarda só o hash SHA-256 do código, que expira em 15 minutos, vale uma única vez e é invalidado quando outro código é solicitado. A resposta ao pedido é neutra, exista o e-mail ou não.
@@ -248,7 +307,10 @@ Comando usado para gerar o instalador:
 ## 12. Limitações
 
 - A **recuperação de senha não envia e-mail**: o código é exibido na própria tela (caixa de demonstração). Em um sistema real, ele seria enviado por e-mail (por exemplo, via SMTP).
-- O acesso de rede do Atlas está aberto a qualquer IP (`0.0.0.0/0`) para facilitar o desenvolvimento e a instalação em outros computadores. Em produção, deve ser restrito aos IPs necessários.
+- O acesso de rede do Atlas está aberto a qualquer IP (`0.0.0.0/0`) para facilitar o desenvolvimento e o uso em outros computadores. Em produção, deve ser restrito aos IPs necessários.
+- As credenciais ficam em texto simples no arquivo `.env`, ao lado do executável. Por isso, a pasta entregue deve ser compartilhada apenas com quem precisa, e a senha do banco e a chave da Groq devem ser trocadas depois da avaliação.
+- O executável **não é assinado digitalmente**, então o Windows pode mostrar o aviso do SmartScreen na primeira execução.
+- O executável é uma **pasta**, e não um arquivo único: o `ChatIA.exe` não funciona fora da pasta `ChatIA`.
 - O RAG usa **palavras-chave exatas**: não reconhece sinônimos, plurais ou variações da palavra, e não usa embeddings.
 - A base de conhecimento não tem tela de cadastro: os documentos são inseridos por código ou pelo Atlas.
 - A sessão existe só em memória: ao fechar a aplicação, é preciso fazer login de novo.
@@ -257,4 +319,3 @@ Comando usado para gerar o instalador:
 - A IA recebe apenas as 10 últimas mensagens de cada conversa.
 - A escolha do tema é guardada por computador (preferências do Java), e não por usuário.
 - O título de uma conversa nova é "Nova conversa" até ser renomeado pelo usuário.
-- As credenciais precisam ser configuradas manualmente em cada computador onde a aplicação for instalada.
