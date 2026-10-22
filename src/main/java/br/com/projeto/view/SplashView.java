@@ -9,16 +9,17 @@ import javafx.scene.paint.Color;
 import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebView;
 import javafx.util.Duration;
-import netscape.javascript.JSObject;
 
 /** Abertura da aplicação: exibe a animação GSAP (HTML) dentro de um WebView. */
 public class SplashView extends StackPane {
+
+    /** Título que o JavaScript define quando a animação termina. */
+    private static final String TITULO_FIM = "splash-concluido";
 
     /** Se algo falhar (arquivo ausente, JavaScript com erro), o login abre depois deste tempo. */
     private static final double TEMPO_MAXIMO_SEGUNDOS = 8;
 
     private final WebView webView = new WebView();
-    private final PonteSplash ponte = new PonteSplash(this::concluir);
     private final PauseTransition limiteDeSeguranca = new PauseTransition(Duration.seconds(TEMPO_MAXIMO_SEGUNDOS));
 
     private Runnable aoTerminar;
@@ -41,13 +42,16 @@ public class SplashView extends StackPane {
         }
 
         WebEngine engine = webView.getEngine();
+
+        // o JavaScript muda o título da página para avisar que a animação acabou
+        engine.titleProperty().addListener((obs, antigo, novo) -> {
+            if (TITULO_FIM.equals(novo)) {
+                Platform.runLater(this::concluir); // sai do callback do WebView antes de trocar de tela
+            }
+        });
         engine.getLoadWorker().stateProperty().addListener((obs, antigo, novo) -> {
-            if (novo == Worker.State.SUCCEEDED) {
-                // expõe a ponte ao JavaScript como window.app
-                JSObject janela = (JSObject) engine.executeScript("window");
-                janela.setMember("app", ponte);
-            } else if (novo == Worker.State.FAILED) {
-                concluir();
+            if (novo == Worker.State.FAILED) {
+                Platform.runLater(this::concluir);
             }
         });
 
@@ -66,20 +70,4 @@ public class SplashView extends StackPane {
             aoTerminar.run();
         }
     }
-
-    /** Classe chamada pelo JavaScript. Precisa ser pública, assim como o método. */
-    public static class PonteSplash {
-
-        private final Runnable aoFinalizar;
-
-        public PonteSplash(Runnable aoFinalizar) {
-            this.aoFinalizar = aoFinalizar;
-        }
-
-        public void finalizar() {
-            // sai do callback do JavaScript antes de trocar de tela
-            Platform.runLater(aoFinalizar);
-        }
-    }
-
 }

@@ -1,8 +1,7 @@
-// avisa o JavaFX que a animação terminou (a ponte "app" é criada pela SplashView)
+
+// avisa o JavaFX que a animação terminou, mudando o título da página
 function finalizar() {
-    if (window.app && window.app.finalizar) {
-        window.app.finalizar();
-    }
+    document.title = "splash-concluido";
 }
 
 // separa o nome em letras para animar uma a uma
